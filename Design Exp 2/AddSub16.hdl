@@ -1,0 +1,16 @@
+/*
+ * 16-bit Adder-Subtractor circuit
+ * Out = A + B, if D = 0
+ * Out = A - B, if D = 1
+ */
+
+CHIP AddSub16
+{
+    IN a[16], b[16], d;
+    OUT out[16];
+
+    PARTS:
+    Not16(in=b, out=notB);
+    Mux16(a=b, b=notB, sel=d, out=newB);
+    Add16(a=a, b=newB, cin=d, out=out, cout=cout);
+}
