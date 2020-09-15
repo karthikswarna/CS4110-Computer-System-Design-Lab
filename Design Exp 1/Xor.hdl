@@ -3,7 +3,8 @@
  * out = not (a == b)
  */
 
-CHIP Xor {
+CHIP Xor
+{
     IN a, b;
     OUT out;
 

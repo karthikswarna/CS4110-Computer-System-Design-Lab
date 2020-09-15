@@ -11,8 +11,12 @@ CHIP DMux
 
     PARTS:
     Nand(a=sel, b=sel, out=notSel);
+
+    // a = in AND (NOT sel)    
     Nand(a=in, b=notSel, out=out1);
-    Nand(a=in, b=sel, out=out2);
     Nand(a=out1, b=out1, out=a);
+
+    // b = in AND sel
+    Nand(a=in, b=sel, out=out2);
     Nand(a=out2, b=out2, out=b);
 }

@@ -3,11 +3,12 @@
  * out = not in
  */
 
-CHIP Not {
+CHIP Not
+{
     IN in;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // NOT in = (in NAND in)
     Nand(a=in, b=in, out=out);
 }
