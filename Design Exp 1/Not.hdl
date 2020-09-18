@@ -9,6 +9,6 @@ CHIP Not
     OUT out;
 
     PARTS:
-    // NOT in = (in NAND in)
+    // OUT = (IN NAND IN)
     Nand(a=in, b=in, out=out);
 }

@@ -10,7 +10,7 @@ CHIP Mux
     OUT out;
 
     PARTS:
-    // out = (a NAND (NOT sel)) NAND (n NAND sel)
+    // out = [a NAND (sel NAND sel)] NAND (b NAND sel)
     Nand(a=sel, b=sel, out=notSel);
     Nand(a=a, b=notSel, out=out1);
     Nand(a=sel, b=b, out=out2); 
