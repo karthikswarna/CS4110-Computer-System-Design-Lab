@@ -1,0 +1,15 @@
+/**
+ * 1-bit register:
+ * If load[t] == 1 then out[t+1] = in[t]
+ *                 else out does not change (out[t+1] = out[t])
+ */
+
+CHIP Reg1Bit
+{
+    IN in, load;
+    OUT out;
+
+    PARTS:
+    Mux(a=feedback, b=in, sel=load, out=net0);
+    myDFF(in=net0, out=out, out=feedback);
+}

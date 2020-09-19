@@ -1,0 +1,27 @@
+/*
+ *  A 8-bit counter with load and reset control bits.
+ *  if(Reset)                                     then out(t + 1) <= 0
+ *  if(Load(t) and Clock)                         then out(t + 1) <= in(t)
+ *  if(Incr1(t) = 0 and Incr0(t) = 0 and Clock)   then out(t + 1) <= out(t) + 0
+ *  if(Incr1(t) = 0 and Incr0(t) = 1 and Clock)   then out(t + 1) <= out(t) + 1
+ *  if(Incr1(t) = 1 and Incr0(t) = 0 and Clock)   then out(t + 1) <= out(t) + 2
+ *  if(Incr1(t) = 1 and Incr0(t) = 1 and Clock)   then out(t + 1) <= out(t) + 4
+ */
+
+CHIP PC8Bit
+{
+    IN in[8], load, inc0, inc1, reset;
+    OUT out[8];
+
+    PARTS:
+    Mux8(a[0..7]=false, b[2..7]=false, b[1]=true, b[0]=false, sel=inc1, out=net0);                  // Inputs are 0, 2.
+    Mux8(a[1..7]=false, a[0]=true, b[3..7]=false, b[2]=true, b[0..1]=false, sel=inc1, out=net1);    // Inputs are 1, 4.
+    Mux8(a=net0, b=net1, sel=inc0, out=net2);
+
+    Add8(a=net2, b=pc, cin=false, out=nextpc);
+
+	Mux8(a=nextpc, b=in, sel=load, out=net3);
+	Mux8(a=net3, b[0..7]=false, sel=reset, out=net4);
+
+	Reg8Bit(in=net4, load=true, out=out, out=pc);
+}

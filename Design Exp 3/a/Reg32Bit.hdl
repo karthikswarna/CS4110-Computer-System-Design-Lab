@@ -1,0 +1,16 @@
+/**
+ * 32-bit register:
+ * If load[t] == 1 then out[t+1] = in[t]
+ * else out does not change
+ */
+
+CHIP Reg32Bit
+{
+    IN in0[16], in1[16], load;
+    OUT out0[16], out1[16];
+
+    PARTS:
+    // in, out are 32-bit words; where in0, out0 are lower halves and in1, out1 are upper halves.
+    Reg16Bit(in=in0, load=load, out=out0);
+    Reg16Bit(in=in1, load=load, out=out1);
+}

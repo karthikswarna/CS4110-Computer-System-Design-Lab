@@ -1,0 +1,59 @@
+/*
+ * A 8-bit left-shift register(PIPO) with shift/load' control bit.
+ * if(Shift/Load'(t) = 1 and Clock)    then out(t + 1) <= Left-shift(out(t)) // one bit shift
+ * if(Shift/Load'(t) = 0 and Clock)    then out(t + 1) <= in(t);
+ */
+
+CHIP LSR8Bit
+{
+    IN in[8], shift;
+    OUT out[8];
+
+    PARTS:
+    Not(in=shift, out=notShift);
+    Mux(a=in[0], b=false, sel=shift, out=newIn);
+    
+    myDFF(in=newIn, out=out[0], out=net0);
+
+    And(a=notShift, b=in[1], out=net1);
+    And(a=shift, b=net0, out=net2);
+    Or(a=net1, b=net2, out=d1);
+
+    myDFF(in=d1, out=out[1], out=net3);
+
+    And(a=notShift, b=in[2], out=net4);
+    And(a=shift, b=net3, out=net5);
+    Or(a=net4, b=net5, out=d2);
+
+    myDFF(in=d2, out=out[2], out=net6);
+
+    And(a=notShift, b=in[3], out=net7);
+    And(a=shift, b=net6, out=net8);
+    Or(a=net7, b=net8, out=d3);
+    
+    myDFF(in=d3, out=out[3], out=net9);
+
+    And(a=notShift, b=in[4], out=net10);
+    And(a=shift, b=net9, out=net11);
+    Or(a=net10, b=net11, out=d4);
+    
+    myDFF(in=d4, out=out[4], out=net12);
+
+    And(a=notShift, b=in[5], out=net13);
+    And(a=shift, b=net12, out=net14);
+    Or(a=net13, b=net14, out=d5);
+    
+    myDFF(in=d5, out=out[5], out=net15);
+
+    And(a=notShift, b=in[6], out=net16);
+    And(a=shift, b=net15, out=net17);
+    Or(a=net16, b=net17, out=d6);
+    
+    myDFF(in=d6, out=out[6], out=net18);
+
+    And(a=notShift, b=in[7], out=net19);
+    And(a=shift, b=net18, out=net20);
+    Or(a=net19, b=net20, out=d7);
+    
+    myDFF(in=d7, out=out[7], out=net21);
+}
