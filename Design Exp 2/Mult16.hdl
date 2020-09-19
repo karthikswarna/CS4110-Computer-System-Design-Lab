@@ -1,0 +1,12 @@
+/*
+ * Multiplies two 16-bit numbers and gives a 16-bit output. 
+ */
+
+CHIP Mult16
+{
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+
+}
