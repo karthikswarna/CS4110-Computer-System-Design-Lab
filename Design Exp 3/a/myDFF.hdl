@@ -4,4 +4,9 @@ CHIP myDFF
     OUT out;
     BUILTIN DFF;
     CLOCKED in;
+
+    // PARTS:
+    // Not(in=clk, out=notClk);
+    // Mux(a=fb1, b=in, sel=clk, out=net0, out=fb1);
+    // Mux(a=fb2, b=net0, sel=notClk, out=out, out=fb2);
 }
