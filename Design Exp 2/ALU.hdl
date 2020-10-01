@@ -1,14 +1,9 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/02/ALU.hdl
-
 /**
  * The ALU (Arithmetic Logic Unit).
  * Computes one of the following functions:
  * x+y, x-y, y-x, 0, 1, -1, x, y, -x, -y, !x, !y,
  * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs, 
- * according to 6 input bits denoted zx,nx,zy,ny,f,no.
+ * according to 6 input bits denoted zx, nx, zy, ny, f, no.
  * In addition, the ALU computes two 1-bit outputs:
  * if the ALU output == 0, zr is set to 1; otherwise zr is set to 0;
  * if the ALU output < 0, ng is set to 1; otherwise ng is set to 0.
@@ -43,5 +38,28 @@ CHIP ALU
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // zx, nx control inputs.
+    Mux16(a=x, b=false, sel=zx, out=zedx);
+    Not16(in=zedx, out=notx);
+    Mux16(a=zedx, b=notx, sel=nx, out=nedx);
+
+    // zy, ny control inputs.
+    Mux16(a=y, b=false, sel=zy, out=zedy);
+    Not16(in=zedy, out=noty);
+    Mux16(a=zedy, b=noty, sel=ny, out=nedy);
+
+    // Operations on x, y.
+    Add16(a=nedx, b=nedy, out=xplusy);
+    And16(a=nedx, b=nedy, out=xandy);
+    Mux16(a=xandy, b=xplusy, sel=f, out=xoy);
+
+    // no control input and out, ng outputs.
+    Not16(in=xoy, out=notXOY);
+    Mux16(a=xoy, b=notXOY, sel=no, out=out, out[0..7]=msb, out[8..15]=lsb, out[15]=ng);
+
+    // zr output bit.
+    Or8Way(in=msb, out=net0);
+    Or8Way(in=lsb, out=net1);
+    Or(a=net0, b=net1, out=net2);
+    Not(in=net2, out=zr);
 }
